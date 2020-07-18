@@ -1,0 +1,7 @@
+<h1>Mes recherches</h1>
+
+<ul>
+  <% @data.each do |search| %>
+    <li><a href="search/<%= search.search %>"><%= search.search %></a></li>
+  <% end %>
+</ul>

@@ -1,0 +1,2 @@
+class TrackingSearch < ApplicationRecord
+end

@@ -6,6 +6,18 @@
       <li class="nav-item active">
         <a class="nav-link" href="<%= root_path %>">Home</a>
       </li>
+      <% if !user_signed_in? %>
+      <li>
+        <%= link_to 'Se connecter', new_user_session_path, class: 'nav-link' %>
+      </li>
+      <% else %>
+        <li>
+          <%= link_to 'Se déconnecter', destroy_user_session_path, class: 'nav-link', method: :delete %>
+        </li>
+        <li>
+          <a href="<%= mysearch_path %>" class="nav-link">Mes recherches</a>
+        </li>
+      <% end %>
     </ul>
 
   <%= form_with(url: '/search/',local: true, method: 'get') do %>
@@ -13,10 +25,5 @@
     <%= text_field_tag(:name) %>
     <%= submit_tag("Search") %>
   <% end %>
-
-<!--    <form class="form-inline my-2 my-lg-0">-->
-<!--      <input class="form-control mr-sm-2" type="search" placeholder="Search">-->
-<!--      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-<!--    </form>-->
   </div>
 </nav>

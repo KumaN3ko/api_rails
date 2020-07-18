@@ -1,4 +1,9 @@
 <div>
   <h1>Bienvenue sur le projet Rails !</h1>
+
+  <% if !user_signed_in? %>
+  <p> Veuillez créer un compte pour avoir accès au reste de l'application.</p>
+  <% end %>
+
   <p>Blablabla</p>
 </div>
