@@ -32,7 +32,9 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'graphql'
+gem "graphql", "1.2.2"
+gem "graphql-client", "0.2.3"
+gem "erubis"
 
 gem 'devise'
 

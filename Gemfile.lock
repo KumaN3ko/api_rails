@@ -71,6 +71,7 @@ GEM
       responders
       warden (~> 1.2.3)
     erubi (1.9.0)
+    erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.13.1)
     ffi (1.13.1-java)
@@ -81,7 +82,10 @@ GEM
     graphiql-rails (1.7.0)
       railties
       sprockets-rails
-    graphql (1.11.1)
+    graphql (1.2.2)
+    graphql-client (0.2.3)
+      activesupport (>= 3.0, < 6.0)
+      graphql (>= 0.19.2)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
     jbuilder (2.10.0)
@@ -208,8 +212,10 @@ DEPENDENCIES
   capybara (>= 2.15)
   coffee-rails (~> 4.2)
   devise
+  erubis
   graphiql-rails
-  graphql
+  graphql (= 1.2.2)
+  graphql-client (= 0.2.3)
   jbuilder (~> 2.5)
   mysql2 (>= 0.3.18, < 0.6.0)
   puma (~> 3.7)

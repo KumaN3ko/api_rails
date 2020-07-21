@@ -1,8 +1,67 @@
-require 'net/http'
-require 'uri'
-require 'json'
+require "graphql/client"
+require "graphql/client/http"
 
 class HomeController < ApplicationController
+
+
+  #Recupère la liste des user ayant un nom proche de celui cherché
+  GetUser = GitHub::Client.parse <<-'GRAPHQL'
+    query {
+      search(query:$searchName, type:USER, first:100) {
+        nodes {
+          ... on User {
+            name
+            login
+            id
+          }
+        }
+      }
+    }
+  GRAPHQL
+
+  #Récupère les repo public du user, ainsi que les langages utilisé dans ces repo
+  GetRepo = GitHub::Client.parse <<-'GRAPHQL'
+    query {
+      search(query:$selectedUser, type:USER, first:100) {
+        nodes {
+          ... on User {
+            repositories(first: 100) {
+              nodes {
+                name
+                languages(first: 10) {
+                  nodes {
+                    name
+                  }
+                }
+              }
+            }
+        		
+          }
+        }
+      }
+    }
+  GRAPHQL
+
+  #Permet de récupérer les languages le plus utilisé dans chaque projet afin de faire une moyenne
+  getPrimaryLanguage = GitHub::Client.parse <<-'GRAPHQL'
+    query {
+      search(query:$selectedUser, type:USER, first:100) {
+        nodes {
+          ... on User {
+            repositories(first: 100) {
+              nodes {
+                primaryLanguage {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  GRAPHQL
+
+
 
   before_action :authenticate_user!, only: [:search]
 
@@ -13,13 +72,13 @@ class HomeController < ApplicationController
 
   def mysearch
     @data = TrackingSearch.where(:user => current_user.id)
-
-    puts("mes data", @data)
   end
 
   def search
 
     @name = params[:name]
+
+    # Create tracking
 
     tracking = TrackingSearch.new()
 
@@ -28,43 +87,14 @@ class HomeController < ApplicationController
 
     tracking.save()
 
-
-    # Debut curl request
-
-    # myjson = "{query {search(query: "+@name+", type: USER, first: 100){nodes{... on USER {name,id}}}}}"
+    # Create graphql request to the GITHUB api
     #
-    # uri = URI.parse("https://api.github.com/graphql")
-    # request = Net::HTTP::Post.new(uri)
-    # request["Authorization"] = "bearer 6121f9785deb5f96d3e95e135698cbee262395ea"
-    # request.body = myjson
-    #
-    # req_options = {
-    #     use_ssl: uri.scheme == "https",
-    # }
-    #
-    # response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-    #   http.request(request)
-    # end
+    data = query GetUser
 
-    # FIn curl request
+    # --------------------------
 
 
 
-    # query {
-    #   search(query: "var", type: USER, first: 100) {
-    #     nodes {
-    #       ... on User {
-    #         name
-    #         login
-    #         repositories(first:10) {
-    #           nodes {
-    #             nameWithOwner
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
 
   end
 
